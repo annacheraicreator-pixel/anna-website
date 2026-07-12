@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkCard from '../WorkCard.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Locale } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const categoriesRaw = await getCollection('categories');
+const categories = categoriesRaw
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((c) => ({ slug: c.id, label: locale === 'ru' ? c.data.label_ru : c.data.label_en }));
+
+const allWorks = await getCollection('works');
+const worksByCategory = categories.map((cat) => ({
+  ...cat,
+  works: allWorks
+    .filter((w) => w.data.category === cat.slug)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.order - a.data.order)
+}));
+
+const title = locale === 'ru' ? 'Портфолио — Anna Cher' : 'Portfolio — Anna Cher';
+const description =
+  locale === 'ru'
+    ? 'Портфолио работ Anna Cher: ювелирка, одежда, косметика.'
+    : "Anna Cher's portfolio: jewelry, clothing, cosmetics.";
+---
+
+<BaseLayout locale={locale} currentPage="portfolio" path="/portfolio" title={title} description={description} categories={categories}>
+  <div class="index-label"><span class="title">{t('portfolio.title')}</span></div>
+
+  <div class="tabs" id="tabs">
+    {categories.map((cat, i) => (
+      <button class="tab" class:list={[{ active: i === 0 }]} data-tab={cat.slug}>{cat.label}</button>
+    ))}
+  </div>
+
+  {worksByCategory.map((cat, i) => (
+    <div class="tab-content" class:list={[{ active: i === 0 }]} id={cat.slug}>
+      <div class="grid-strict">
+        {cat.works.map((work) => (
+          <WorkCard work={work} locale={locale} />
+        ))}
+      </div>
+    </div>
+  ))}
+</BaseLayout>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.tab');
+  const tabContents = document.querySelectorAll<HTMLElement>('.tab-content');
+
+  function showTab(slug: string) {
+    tabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.tab === slug));
+    tabContents.forEach((content) => content.classList.toggle('active', content.id === slug));
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      if (tab.dataset.tab) {
+        showTab(tab.dataset.tab);
+        history.replaceState(null, '', `#${tab.dataset.tab}`);
+      }
+    });
+  });
+
+  const initialHash = window.location.hash.replace('#', '');
+  if (initialHash && document.getElementById(initialHash)) {
+    showTab(initialHash);
+  }
+</script>

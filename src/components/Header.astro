@@ -1,0 +1,84 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { useTranslations } from '../i18n/utils';
+import type { Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  currentPage: 'home' | 'portfolio' | 'video';
+  categories: { slug: string; label: string }[];
+}
+
+const { locale, currentPage, categories } = Astro.props;
+const t = useTranslations(locale);
+
+const homeHref = getRelativeLocaleUrl(locale, '/');
+const portfolioHref = getRelativeLocaleUrl(locale, '/portfolio');
+const videoHref = getRelativeLocaleUrl(locale, '/video');
+const aboutHref = `${homeHref}#about-anchor`;
+const contactHref = `${homeHref}#contact-anchor`;
+
+const enHref = getRelativeLocaleUrl('en', currentPage === 'home' ? '/' : `/${currentPage}`);
+const ruHref = getRelativeLocaleUrl('ru', currentPage === 'home' ? '/' : `/${currentPage}`);
+---
+
+<header class="topbar">
+  <button class="burger" id="burgerBtn" aria-label={t('nav.menu')}>
+    <span class="line"></span><span class="line"></span><span class="line"></span>
+  </button>
+  <a class="brand-mini" href={homeHref}>Anna Cher</a>
+  <div class="lang-toggle">
+    <a class="lang-opt" class:list={[{ active: locale === 'ru' }]} href={ruHref}>RU</a>
+    <span class="lang-sep">/</span>
+    <a class="lang-opt" class:list={[{ active: locale === 'en' }]} href={enHref}>EN</a>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidemenu" id="sidemenu">
+  <div class="sidemenu-head">
+    <span class="brand-mini">{t('nav.menu')}</span>
+    <button class="close-btn" id="closeBtn" aria-label="Close">✕</button>
+  </div>
+  <nav>
+    <ul>
+      <li><a class="navlink" class:list={[{ active: currentPage === 'home' }]} href={homeHref}>{t('nav.home')}</a></li>
+      <li>
+        <a class="navlink" class:list={[{ active: currentPage === 'portfolio' }]} href={portfolioHref}>{t('nav.portfolio')}</a>
+        <ul class="submenu">
+          {categories.map((cat) => (
+            <li><a class="navlink" href={`${portfolioHref}#${cat.slug}`}>{cat.label}</a></li>
+          ))}
+        </ul>
+      </li>
+      <li><a class="navlink" class:list={[{ active: currentPage === 'video' }]} href={videoHref}>{t('nav.video')}</a></li>
+      <li><a class="navlink" href={aboutHref}>{t('nav.about')}</a></li>
+      <li><a class="navlink" href={contactHref}>{t('nav.contacts')}</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const closeBtn = document.getElementById('closeBtn');
+  const sidemenu = document.getElementById('sidemenu');
+  const overlay = document.getElementById('overlay');
+
+  function openMenu() {
+    sidemenu?.classList.add('open');
+    overlay?.classList.add('show');
+  }
+  function closeMenu() {
+    sidemenu?.classList.remove('open');
+    overlay?.classList.remove('show');
+  }
+
+  burgerBtn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
+
+  sidemenu?.querySelectorAll('a.navlink').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+</script>

@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkCard from '../WorkCard.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Locale } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const categoriesRaw = await getCollection('categories');
+const categoryList = categoriesRaw.sort((a, b) => a.data.order - b.data.order);
+const categories = categoryList.map((c) => ({
+  slug: c.id,
+  label: locale === 'ru' ? c.data.label_ru : c.data.label_en
+}));
+const categoryLabelBySlug = new Map(categories.map((c) => [c.slug, c.label]));
+
+const allWorks = await getCollection('works');
+const videoWorks = allWorks
+  .filter((w) => w.data.medium === 'video')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.order - a.data.order);
+
+const title = locale === 'ru' ? 'AI видео — Anna Cher' : 'AI Video — Anna Cher';
+const description =
+  locale === 'ru'
+    ? 'AI-видео работы Anna Cher из всех категорий портфолио.'
+    : "Anna Cher's AI video work across all portfolio categories.";
+---
+
+<BaseLayout locale={locale} currentPage="video" path="/video" title={title} description={description} categories={categories}>
+  <div class="index-label"><span class="title">{t('video.title')}</span></div>
+  <div class="grid-strict">
+    {videoWorks.map((work) => (
+      <WorkCard work={work} locale={locale} categoryLabel={categoryLabelBySlug.get(work.data.category)} />
+    ))}
+  </div>
+</BaseLayout>

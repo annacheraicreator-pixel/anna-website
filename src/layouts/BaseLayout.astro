@@ -1,0 +1,56 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Locale } from '../i18n/ui';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  currentPage: 'home' | 'portfolio' | 'video';
+  path: string;
+  title: string;
+  description: string;
+  categories: { slug: string; label: string }[];
+}
+
+const { locale, currentPage, path, title, description, categories } = Astro.props;
+
+const enPath = getRelativeLocaleUrl('en', path);
+const ruPath = getRelativeLocaleUrl('ru', path);
+const canonicalPath = locale === 'en' ? enPath : ruPath;
+const canonicalUrl = new URL(canonicalPath, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang={locale}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site).toString()} />
+  <link rel="alternate" hreflang="ru" href={new URL(ruPath, Astro.site).toString()} />
+  <link rel="alternate" hreflang="x-default" href={new URL(enPath, Astro.site).toString()} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@400;500;600;700&family=Stack+Sans+Headline:wght@300;400&family=Stack+Sans+Notch:wght@400&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <Header locale={locale} currentPage={currentPage} categories={categories} />
+  <main>
+    <slot />
+  </main>
+  <Footer locale={locale} />
+</body>
+</html>

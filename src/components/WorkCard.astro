@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import { useTranslations } from '../i18n/utils';
+import type { Locale } from '../i18n/ui';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  work: CollectionEntry<'works'>;
+  locale: Locale;
+  linkHref?: string;
+  categoryLabel?: string;
+}
+
+const { work, locale, linkHref, categoryLabel } = Astro.props;
+const t = useTranslations(locale);
+const { data } = work;
+const title = locale === 'ru' ? data.title_ru : data.title_en;
+const Tag = linkHref ? 'a' : 'div';
+---
+
+<Tag class="card photo-cell" href={linkHref}>
+  {data.image ? (
+    <Image src={data.image} alt={title} width={480} height={640} />
+  ) : (
+    <>
+      <span class="play" style={data.medium === 'video' ? '' : 'display:none'}>▶</span>
+      <span class="kind">{data.medium === 'video' ? t('card.video') : t('card.photo')}</span>
+      <span>{title}{categoryLabel ? ` (${categoryLabel})` : ''}</span>
+    </>
+  )}
+  {data.client && <span class="client-tag">{t('card.client')} {data.client}</span>}
+  <span class="view-label">{t('card.view')}</span>
+</Tag>
