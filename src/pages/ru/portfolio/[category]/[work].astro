@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import WorkDetailPage from '../../../../components/pages/WorkDetailPage.astro';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  return works
+    .filter((w) => w.data.category)
+    .map((w) => ({
+      params: { category: w.data.category, work: w.id },
+      props: { workId: w.id }
+    }));
+}
+
+const { workId } = Astro.props;
+---
+
+<WorkDetailPage locale="ru" workId={workId} />

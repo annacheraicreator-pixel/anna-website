@@ -1,0 +1,17 @@
+title_ru: Cosmetics 01
+title_en: Cosmetics 01
+category: cosmetics
+medium: photo
+featured: false
+date: 2026-07-18
+order: 1
+images:
+  - ./images/cosmetics-01/01.jpg
+  - ./images/cosmetics-01/02.jpg
+  - ./images/cosmetics-01/03.jpg
+  - ./images/cosmetics-01/04.jpg
+  - ./images/cosmetics-01/05.jpg
+  - ./images/cosmetics-01/06.jpg
+  - ./images/cosmetics-01/09.jpg
+  - ./images/cosmetics-01/10.jpg
+  - ./images/cosmetics-01/11.jpg

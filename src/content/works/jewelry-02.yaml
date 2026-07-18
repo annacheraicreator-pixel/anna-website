@@ -1,0 +1,15 @@
+title_ru: Jewelry 02
+title_en: Jewelry 02
+category: jewelry
+medium: photo
+featured: true
+date: 2026-07-18
+order: 2
+images:
+  - ./images/jewelry-02/01.jpg
+  - ./images/jewelry-02/02.jpg
+  - ./images/jewelry-02/03.jpg
+  - ./images/jewelry-02/04.jpg
+  - ./images/jewelry-02/05.jpg
+  - ./images/jewelry-02/06.jpg
+  - ./images/jewelry-02/07.jpg

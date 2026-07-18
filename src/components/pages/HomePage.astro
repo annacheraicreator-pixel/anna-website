@@ -1,9 +1,10 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkCard from '../WorkCard.astro';
 import { useTranslations } from '../../i18n/utils';
+import { sortWorks, getWorkHref } from '../../lib/works';
 import type { Locale } from '../../i18n/ui';
 
 interface Props {
@@ -19,10 +20,7 @@ const categories = categoriesRaw
   .map((c) => ({ slug: c.id, label: locale === 'ru' ? c.data.label_ru : c.data.label_en }));
 
 const allWorks = await getCollection('works');
-const recentWorks = allWorks
-  .filter((w) => w.data.featured)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.order - a.data.order)
-  .slice(0, 4);
+const recentWorks = sortWorks(allWorks.filter((w) => w.data.featured)).slice(0, 4);
 
 const portfolioHref = getRelativeLocaleUrl(locale, '/portfolio');
 
@@ -39,11 +37,11 @@ const description =
     <p class="role">{t('hero.role')}</p>
   </div>
 
-  <div class="section-block" id="works-anchor">
+  <div class="section-block works-wrap" id="works-anchor">
     <p class="link-label">{t('home.recentWorks')}</p>
     <div class="works-strip">
       {recentWorks.map((work) => (
-        <WorkCard work={work} locale={locale} linkHref={`${portfolioHref}#${work.data.category}`} />
+        <WorkCard work={work} locale={locale} linkHref={getWorkHref(locale, work)} />
       ))}
     </div>
   </div>
@@ -52,9 +50,11 @@ const description =
     <span>{t('home.portfolioBanner')}</span>
   </a>
 
-  <div class="section-block" id="about-anchor">
+  <div class="section-block about-wrap" id="about-anchor">
     <div class="about-layout">
-      <div class="portrait"></div>
+      <div class="portrait">
+        <img src="/images/anna-portrait.jpg" alt="Anna Chernova" width="563" height="563" />
+      </div>
       <div class="about-text">
         <p class="block-heading">{t('home.about')}</p>
         <p>{t('home.aboutText')}</p>
@@ -66,13 +66,14 @@ const description =
     </div>
   </div>
 
-  <div class="section-block" id="contact-anchor">
-    <p class="block-heading">{t('home.contacts')}</p>
-    <ul class="contact-list">
-      <li><a href="mailto:hello@annacherartist.com"><span>Email</span>hello@annacherartist.com</a></li>
-      <li><a href="https://www.threads.net/@anna_cher_24" target="_blank" rel="noopener"><span>Threads</span>@anna_cher_24</a></li>
-      <li><a href="https://pinterest.com/anna_cher_24" target="_blank" rel="noopener"><span>Pinterest</span>@anna_cher_24</a></li>
-      <li><a href="https://t.me/an_ch_wb" target="_blank" rel="noopener"><span>Telegram</span>@an_ch_wb</a></li>
-    </ul>
+  <div class="section-block contacts-wrap" id="contact-anchor">
+    <div class="contacts-inner">
+      <p class="block-heading">{t('home.contacts')}</p>
+      <ul class="contact-list">
+        <li><a href="mailto:annacheraicreator@gmail.com"><span>Email</span>annacheraicreator@gmail.com</a></li>
+        <li><a href="https://t.me/annacher2023" target="_blank" rel="noopener"><span>Telegram</span>@annacher2023</a></li>
+        <li><a href="https://pinterest.com/anna_cher_24" target="_blank" rel="noopener"><span>Pinterest</span>@anna_cher_24</a></li>
+      </ul>
+    </div>
   </div>
 </BaseLayout>

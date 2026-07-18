@@ -1,0 +1,17 @@
+title_ru: Clothing 01
+title_en: Clothing 01
+category: clothing
+medium: photo
+featured: false
+date: 2026-07-18
+order: 1
+images:
+  - ./images/clothing-01/01.jpg
+  - ./images/clothing-01/02.jpg
+  - ./images/clothing-01/03.jpg
+  - ./images/clothing-01/04.jpg
+  - ./images/clothing-01/05.jpg
+  - ./images/clothing-01/06.jpg
+  - ./images/clothing-01/07.jpg
+  - ./images/clothing-01/08.jpg
+  - ./images/clothing-01/09.jpg

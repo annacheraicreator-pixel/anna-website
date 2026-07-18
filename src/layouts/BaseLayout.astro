@@ -51,6 +51,6 @@ const canonicalUrl = new URL(canonicalPath, Astro.site).toString();
   <main>
     <slot />
   </main>
-  <Footer locale={locale} />
+  <Footer locale={locale} dark={currentPage === 'home'} />
 </body>
 </html>

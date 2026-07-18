@@ -12,7 +12,7 @@ export const ui = {
     'nav.contacts': 'Contacts',
     'hero.role': 'AI-Artist and Brand designer',
     'home.recentWorks': 'Recent works',
-    'home.portfolioBanner': 'Portfolio',
+    'home.portfolioBanner': 'All portfolio',
     'home.about': 'About me',
     'home.aboutText':
       "My name is Anna Chernova — I'm an AI artist and brand designer. I work mainly with jewelry and streetwear brands, developing concepts and AI-generated creatives tailored to each brand's identity and audience.",
@@ -25,6 +25,9 @@ export const ui = {
     'card.client': 'client —',
     'card.photo': 'Photo',
     'card.video': 'Video',
+    'work.back': 'Back',
+    'work.next': 'Next',
+    'work.noMedia': 'Media coming soon',
     'footer.rights': '© 2026 Anna Cher. All rights reserved.'
   },
   ru: {
@@ -36,7 +39,7 @@ export const ui = {
     'nav.contacts': 'Контакты',
     'hero.role': 'AI-Artist and Brand designer',
     'home.recentWorks': 'Последние работы',
-    'home.portfolioBanner': 'Портфолио',
+    'home.portfolioBanner': 'Все портфолио',
     'home.about': 'Обо мне',
     'home.aboutText':
       'Меня зовут Чернова Анна, я AI-artist и бренд дизайнер. Работаю преимущественно с ювелирными и уличными брендами. Разрабатываю концепции, креативы с использованием ИИ, учитывая особенности бренда и его ЦА.',
@@ -49,6 +52,9 @@ export const ui = {
     'card.client': 'клиент —',
     'card.photo': 'Фото',
     'card.video': 'Видео',
+    'work.back': 'Назад',
+    'work.next': 'Далее',
+    'work.noMedia': 'Медиа скоро появится',
     'footer.rights': '© 2026 Anna Cher. Все права защищены.'
   }
 } as const;

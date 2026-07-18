@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkCard from '../WorkCard.astro';
 import { useTranslations } from '../../i18n/utils';
+import { sortWorks, getWorkHref } from '../../lib/works';
 import type { Locale } from '../../i18n/ui';
 
 interface Props {
@@ -20,9 +21,7 @@ const categories = categoriesRaw
 const allWorks = await getCollection('works');
 const worksByCategory = categories.map((cat) => ({
   ...cat,
-  works: allWorks
-    .filter((w) => w.data.category === cat.slug)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.order - a.data.order)
+  works: sortWorks(allWorks.filter((w) => w.data.category === cat.slug))
 }));
 
 const title = locale === 'ru' ? 'Портфолио — Anna Cher' : 'Portfolio — Anna Cher';
@@ -45,7 +44,7 @@ const description =
     <div class="tab-content" class:list={[{ active: i === 0 }]} id={cat.slug}>
       <div class="grid-strict">
         {cat.works.map((work) => (
-          <WorkCard work={work} locale={locale} />
+          <WorkCard work={work} locale={locale} linkHref={getWorkHref(locale, work)} />
         ))}
       </div>
     </div>

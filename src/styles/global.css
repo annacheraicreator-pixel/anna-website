@@ -43,20 +43,17 @@ a {
 }
 
 .burger {
-  width: 26px;
-  height: 16px;
+  width: 24px;
+  height: auto;
   border: none;
   background: none;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   padding: 0;
   flex: none;
 }
-.burger .line { display: flex; align-items: center; gap: 5px; height: 3px; }
-.burger .line::before { content: ''; width: 3px; height: 3px; background: var(--ink); flex: none; }
-.burger .line::after { content: ''; flex: 1; height: 1.5px; background: var(--ink); }
+.burger img { width: 100%; height: auto; display: block; }
 
 .brand-mini {
   font-family: 'Stack Sans Notch', -apple-system, sans-serif;
@@ -64,6 +61,7 @@ a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 400;
+  text-decoration: none;
 }
 
 .lang-toggle {
@@ -153,11 +151,11 @@ a {
 main {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 20px 80px;
+  padding: 53px 20px 80px;
 }
 
-.section-block { padding-top: 48px; }
-.hero.section-block { padding-top: 0; }
+.section-block { margin-top: 53px; }
+.hero.section-block { margin-top: 0; padding-top: 0; }
 [id] { scroll-margin-top: 84px; }
 
 .index-label { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; }
@@ -169,10 +167,10 @@ main {
   font-weight: 400;
 }
 
-.hero { text-align: center; margin-bottom: 44px; }
+.hero { text-align: center; margin-bottom: 0; }
 .hero h1 {
   font-family: 'Stack Sans Notch', -apple-system, sans-serif;
-  font-size: clamp(30px, 10vw, 74px);
+  font-size: clamp(33px, 11vw, 81px);
   font-weight: 400;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -182,7 +180,7 @@ main {
 .hero .role {
   display: block;
   margin-top: 4px;
-  font-size: 15px;
+  font-size: 13.5px;
   letter-spacing: 0.02em;
   font-family: 'Stack Sans Headline', -apple-system, sans-serif;
   font-weight: 300;
@@ -240,7 +238,26 @@ main {
   z-index: 2;
 }
 .card .play { font-size: 16px; }
-.card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card img, .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.video-play-btn {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(16, 16, 16, 0.6);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-play-btn:hover { background: rgba(16, 16, 16, 0.8); }
 
 .photo-cell { cursor: pointer; }
 .photo-cell .view-label {
@@ -265,29 +282,34 @@ main {
   background: rgba(16, 16, 16, 0.6);
 }
 
-/* Recent works strip: edge to edge, mobile-first 2-up */
+/* Recent works: mobile-first single-column feed */
 .works-strip {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-  margin-bottom: 56px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 0;
 }
 .works-strip .card { aspect-ratio: 3 / 4; height: auto; }
 
-/* Full-bleed portfolio banner */
+/* Full-bleed portfolio banner, symmetric spacing above/below */
 .portfolio-banner {
   width: 100vw;
   position: relative;
   left: 50%;
   margin-left: -50vw;
-  height: 280px;
-  background: #c7c7c7;
+  height: 380px;
+  background-color: #c7c7c7;
+  background-image: url('/images/portfolio-hero.jpg');
+  background-size: cover;
+  background-position: 35% 45%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   text-decoration: none;
-  margin-bottom: 56px;
+  margin-top: 53px;
+  margin-bottom: 53px;
+  transition: filter .2s ease;
 }
 .portfolio-banner span {
   color: #fff;
@@ -295,24 +317,36 @@ main {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   font-weight: 700;
+  text-decoration: none;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
-.portfolio-banner:hover { background: #b9b9b9; }
+.portfolio-banner:hover { filter: brightness(0.85); }
 
-/* Strict card grid used on portfolio + video pages */
+/* Card grid used on portfolio + video pages: single column on mobile, real gaps */
 .grid-strict {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: var(--line);
+  grid-template-columns: 1fr;
+  gap: 14px;
+  background: transparent;
 }
 .grid-strict .card { aspect-ratio: 3 / 4; }
 
 /* ---------- Tabs (portfolio page) ---------- */
 
-.tabs { display: flex; flex-wrap: wrap; gap: 0; margin-bottom: 28px; }
+.tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  margin-bottom: 28px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
   background: none;
   border: none;
+  border-bottom: 2px solid transparent;
   cursor: pointer;
   font-family: 'Stack Sans Headline', -apple-system, sans-serif;
   font-size: 14px;
@@ -322,10 +356,63 @@ main {
   padding: 0 18px 12px 0;
   margin-right: 18px;
   font-weight: 300;
+  flex: none;
+  white-space: nowrap;
 }
-.tab.active { color: var(--ink); }
+.tab.active { color: var(--ink); border-bottom-color: var(--ink); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
+
+/* ---------- Work detail page ---------- */
+
+.work-topbar {
+  position: sticky;
+  top: 60px;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  padding: 14px 0;
+  margin: 0 -20px 32px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.work-nav-btn {
+  font-family: 'Stack Sans Headline', -apple-system, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 400;
+}
+.work-nav-btn:hover { opacity: 0.6; }
+
+.work-head { margin-bottom: 32px; }
+.work-title {
+  font-family: 'Stack Sans Notch', -apple-system, sans-serif;
+  font-size: clamp(28px, 7vw, 44px);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.work-client { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.work-description { font-size: 15px; color: var(--muted); max-width: 560px; }
+
+.work-gallery { display: flex; flex-direction: column; gap: 4px; }
+.work-gallery img { width: 100%; height: auto; display: block; }
+.work-video { width: 100%; height: auto; display: block; background: var(--card); }
+.work-placeholder {
+  aspect-ratio: 3 / 4;
+  background: var(--card);
+  color: var(--muted);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ---------- About ---------- */
 
@@ -333,25 +420,38 @@ main {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 0;
 }
-.portrait { width: 100%; aspect-ratio: 1 / 1; background: var(--card); }
+.portrait { width: 100%; aspect-ratio: 1 / 1; background: var(--card); overflow: hidden; }
+.portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .about-text { flex: 1; }
-.about-text p { color: var(--muted); font-size: 15px; max-width: 480px; }
+.about-text p { color: var(--ink); font-size: 15px; max-width: 480px; }
 .clients-block { margin-top: 28px; }
-.clients-block p.list { font-size: 13px; color: var(--muted); line-height: 1.9; }
+.clients-block p.list { font-size: 13px; color: var(--ink); line-height: 1.9; }
 
 /* ---------- Contacts (only place with dividers) ---------- */
 
+.contacts-wrap {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  background: #4B4B4B;
+  color: #fff;
+  padding: 32px 20px 8px;
+  margin-bottom: -80px;
+}
+.contacts-inner { max-width: 1100px; margin: 0 auto; }
+.contacts-wrap .block-heading { color: #fff; }
+
 .contact-list { list-style: none; max-width: 420px; }
-.contact-list li { font-size: 16px; font-weight: 600; padding: 16px 0; border-top: 1px solid var(--line); }
-.contact-list li:last-child { border-bottom: 1px solid var(--line); }
+.contact-list li { font-size: 16px; font-weight: 600; padding: 16px 0; border-top: 1px solid rgba(255, 255, 255, 0.25); }
 .contact-list span {
   display: block;
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.6);
   margin-bottom: 4px;
   font-weight: 400;
 }
@@ -360,24 +460,55 @@ main {
 
 /* ---------- Footer ---------- */
 
-.site-footer { margin-top: 64px; text-align: center; font-size: 12px; color: var(--muted); }
+.site-footer { margin-top: 64px; text-align: center; font-size: 12px; color: var(--muted); padding-bottom: 8px; }
+.site-footer.dark {
+  margin-top: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  background: #4B4B4B;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 12px 20px 36px;
+}
 
 /* ---------- Desktop breakpoint ---------- */
 
 @media (min-width: 701px) {
   .topbar { padding: 22px 28px; }
-  main { padding: 56px 28px 100px; }
-  .section-block { padding-top: 60px; }
+  main { padding: 72px 28px 100px; }
+  .section-block { margin-top: 72px; }
+  .hero.section-block { margin-top: 0; }
   .index-label { margin-bottom: 30px; }
-  .hero { margin-bottom: 56px; }
+  .work-topbar { top: 68px; margin: 0 -28px 40px; padding-left: 28px; padding-right: 28px; }
+  .work-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; grid-auto-flow: dense; }
+  .work-placeholder, .work-video, .work-photo-wide { grid-column: 1 / -1; }
+  .hero { margin-bottom: 0; }
+  .hero h1 { font-size: clamp(30px, 10vw, 74px); }
   .hero .role { font-size: 17px; }
   .link-label { margin-bottom: 24px; }
-  .works-strip { grid-template-columns: repeat(4, 1fr); margin-bottom: 72px; }
-  .portfolio-banner { height: 460px; margin-bottom: 72px; }
-  .grid-strict { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-  .about-layout { flex-direction: row; gap: 1px; background: var(--line); margin-bottom: 56px; }
-  .portrait { flex: 0 0 260px; }
+
+  .works-wrap,
+  .about-wrap {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    padding: 0 90px;
+  }
+  .works-strip { grid-template-columns: repeat(4, 1fr); gap: 0; }
+
+  .portfolio-banner { height: 460px; margin-top: 72px; margin-bottom: 72px; background-position: center 45%; }
+
+  .grid-strict { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+  .about-layout { flex-direction: row; gap: 1px; background: var(--line); margin-bottom: 0; }
+  .portrait { flex: 0 0 420px; }
   .about-text { min-width: 260px; background: var(--bg); padding: 0 0 0 32px; }
+
+  .contacts-wrap { padding: 48px 28px 8px; margin-bottom: -100px; }
   .contact-list li { font-size: 17px; padding: 18px 0; }
+
   .site-footer { margin-top: 80px; }
+  .site-footer.dark { padding: 16px 28px 40px; }
 }

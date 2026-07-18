@@ -1,0 +1,12 @@
+title_ru: Jewelry 04
+title_en: Jewelry 04
+category: jewelry
+medium: photo
+featured: true
+date: 2026-07-18
+order: 4
+images:
+  - ./images/jewelry-04/01.jpg
+  - ./images/jewelry-04/02.jpg
+  - ./images/jewelry-04/03.jpg
+  - ./images/jewelry-04/04.jpg

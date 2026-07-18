@@ -18,13 +18,15 @@ const works = defineCollection({
       title_en: z.string(),
       description_ru: z.string().optional(),
       description_en: z.string().optional(),
-      category: z.string(),
+      category: z.string().optional(),
       medium: z.enum(['photo', 'video']),
       client: z.string().optional(),
       featured: z.boolean().default(false),
       date: z.coerce.date(),
       order: z.number().default(0),
-      image: image().optional()
+      images: z.array(image()).default([]),
+      video: z.string().optional(),
+      hasAudio: z.boolean().default(false)
     })
 });
 

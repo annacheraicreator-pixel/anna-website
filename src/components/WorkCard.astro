@@ -9,18 +9,29 @@ interface Props {
   locale: Locale;
   linkHref?: string;
   categoryLabel?: string;
+  playableVideo?: boolean;
 }
 
-const { work, locale, linkHref, categoryLabel } = Astro.props;
+const { work, locale, linkHref, categoryLabel, playableVideo = false } = Astro.props;
 const t = useTranslations(locale);
 const { data } = work;
 const title = locale === 'ru' ? data.title_ru : data.title_en;
+const cover = data.images[0];
+const silentVideo = !!data.video && !data.hasAudio;
+const interactiveSoundVideo = !!data.video && data.hasAudio && playableVideo;
 const Tag = linkHref ? 'a' : 'div';
 ---
 
 <Tag class="card photo-cell" href={linkHref}>
-  {data.image ? (
-    <Image src={data.image} alt={title} width={480} height={640} />
+  {silentVideo ? (
+    <video class="card-media" src={data.video} muted autoplay loop playsinline></video>
+  ) : interactiveSoundVideo ? (
+    <>
+      <video class="card-media" src={data.video} poster={cover?.src} preload="metadata" playsinline></video>
+      <button type="button" class="video-play-btn" aria-label={t('card.video')}>▶</button>
+    </>
+  ) : cover ? (
+    <Image src={cover} alt={title} width={480} height={640} />
   ) : (
     <>
       <span class="play" style={data.medium === 'video' ? '' : 'display:none'}>▶</span>
@@ -29,5 +40,20 @@ const Tag = linkHref ? 'a' : 'div';
     </>
   )}
   {data.client && <span class="client-tag">{t('card.client')} {data.client}</span>}
-  <span class="view-label">{t('card.view')}</span>
+  {!interactiveSoundVideo && <span class="view-label">{t('card.view')}</span>}
 </Tag>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.video-play-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const video = btn.previousElementSibling as HTMLVideoElement | null;
+      if (video?.tagName === 'VIDEO') {
+        video.controls = true;
+        video.play();
+        btn.style.display = 'none';
+      }
+    });
+  });
+</script>
