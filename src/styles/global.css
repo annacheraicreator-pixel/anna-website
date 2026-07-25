@@ -506,7 +506,8 @@ main {
   .portrait { flex: 0 0 420px; }
   .about-text { min-width: 260px; background: var(--bg); padding: 0 0 0 32px; }
 
-  .contacts-wrap { padding: 48px 28px 8px; margin-bottom: -100px; }
+  .contacts-wrap { padding: 48px 90px 8px; margin-bottom: -100px; }
+  .contacts-inner { margin: 0; }
   .contact-list li { font-size: 17px; padding: 18px 0; }
 
   .site-footer { margin-top: 80px; }
